@@ -1,0 +1,31 @@
+{
+  "name": "build_platform_node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jian521ymn/build_platform_node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jian521ymn/build_platform_node/issues"
+  },
+  "homepage": "https://github.com/jian521ymn/build_platform_node#readme",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.0",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "jian_ymn_node": "^1.0.13",
+    "mysql": "^2.18.1",
+    "yarn": "^1.22.18"
+  }
+}
