@@ -118,6 +118,7 @@ route.post('/login', (req, res) => {
 //=>检测是否登录
 const maxTime = 24*60*60*1000 // 秘钥失效时间
 route.get('/login', (req, res) => {
+    console.log(req.query?.token,req.query,'req.query?.token');
 	let token = req.query?.token || getCookie(req,'token');
     console.log(token);
 	if(!token){
