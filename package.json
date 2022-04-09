@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/jian521ymn/build_platform_node#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -25,7 +26,10 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "jian_ymn_node": "^1.0.13",
+    "md5": "^2.3.0",
     "mysql": "^2.18.1",
+    "node-xlsx": "^0.21.0",
+    "svg-captcha": "^1.4.0",
     "yarn": "^1.22.18"
   }
 }

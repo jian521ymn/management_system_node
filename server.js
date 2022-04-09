@@ -42,7 +42,7 @@ app.use(async (req, res, next) => {
 });
 
 /*-ROUTE-*/
-app.use('/api/build_project', require('./routes/api/build_project/index.js'));
+app.use('/user', require('./routes/user/index.js'));
 
 app.use((req, res) => {
 	res.status(404);
