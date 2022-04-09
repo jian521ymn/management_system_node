@@ -106,6 +106,7 @@ route.post('/login', (req, res) => {
 const maxTime = 24*60*60*1000 // 秘钥失效时间
 route.get('/login', (req, res) => {
 	let {token} = req.query || {};
+    console.log(req.header,'2222');
 	if(!token){
 	    res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:1}}));
 	    return
