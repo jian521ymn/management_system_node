@@ -26,6 +26,19 @@ const { createUuid } = require('../../utils/createUuid')
 const xlsxParsing = require('../../utils/xlsxParsing'); //xlsx转换包
 const {imgProxyAxios} = require('../../utils/imgProxyAxios')
 const { fileBufferPromise } = require('../../utils/fileBufferPromise')
+function getCookie(req,name) {
+    //取出cookie   
+    var strCookie = req.headers.cookie;
+    //cookie的保存格式是 分号加空格 "; "  
+    var arrCookie = strCookie.split("; ");
+    for (var i = 0; i < arrCookie.length; i++) {
+        var arr = arrCookie[i].split("=");
+        if (arr[0] == name) {
+            return unescape(arr[1]);
+        }
+    }
+    return "";
+}
 // 新增时对空数据进行赋默认值
 const userParams=(params)=>{
     const defaultParams={
@@ -105,8 +118,8 @@ route.post('/login', (req, res) => {
 //=>检测是否登录
 const maxTime = 24*60*60*1000 // 秘钥失效时间
 route.get('/login', (req, res) => {
-	let {token} = req.query || {};
-    console.log(req.header,'2222');
+	let token = req.query?.token || getCookie(req,'token');
+    console.log(token);
 	if(!token){
 	    res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:1}}));
 	    return
