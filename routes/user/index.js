@@ -71,7 +71,7 @@ const dateFilter=(item)=>{
 route.post('/login', (req, res) => {
     console.log(req.body)
     let md5Str = '',userNames, imageUrls
-	let {account:name, password = '', authCode = ''} = req.body || {};
+	let {userName:name, password = '', authCode = ''} = req.body || {};
 	const loginQuerySql = queryMyspl( {name:"USER",params:{name,password,isDelete:"0"}}); // 编译转换为SQL指令
     mysqlConnection({querySql:loginQuerySql,res,isCheckSso:false})
     .then(({result})=>{
