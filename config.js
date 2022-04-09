@@ -7,7 +7,7 @@ module.exports = {
 		ALLOW_ORIGIN: 'http://114.215.183.5:3336/,http://jianymn.top',
 		ALLOW_METHODS: 'PUT,POST,GET,DELETE,OPTIONS,HEAD',
 		HEADERS: 'Content-Type,Content-Length,Authorization, Accept,X-Requested-With',
-		CREDENTIALS: true
+		CREDENTIALS: false
 	},
 
 	//=>SESSION存储相关信息
