@@ -107,10 +107,12 @@ route.post('/login', (req, res) => {
     .then(({result})=>{
         res.setHeader('Set-Cookie',`token=${md5Str}`);
         res.send(success(true, {
-            userNames,
-            token:md5Str,
-            imageUrl:imageUrls,
-            power: req.session.power,
+            data:{
+                userNames,
+                token:md5Str,
+                imageUrl:imageUrls,
+                power: req.session.power,
+            }
         })) 
     })
 });
@@ -136,7 +138,7 @@ route.get('/login', (req, res) => {
         const tokenStartTime = dayjs(tokenTime).valueOf() // 获取当前时间戳
         // 没查到数据 && 超出时间戳限制时间 && token是否与数据库内一致
         if(result.length !== 0 && dayjs().valueOf()-tokenStartTime < maxTime && sqlToken === token){
-            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0}}));
+            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token}}));
             return
         }
         res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:1}}));
