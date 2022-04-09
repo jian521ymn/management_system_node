@@ -7,7 +7,7 @@ const CONFIG = require('./config'),
 const express = require('express'),
 	app = express();
 
-app.use(cors()) // 解决跨域
+// app.use(cors()) // 解决跨域
 app.listen(CONFIG.PORT, () => {
 	console.log(`当前服务 起于${CONFIG.PORT}端口`);
 });
