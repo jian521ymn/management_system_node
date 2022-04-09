@@ -1,6 +1,6 @@
 // UPDATE `jianymn_admin`.`USER` SET `token` = '3755d3f0b357d8479a81ddd50d6354822', `tokenTime` = '0000-00-00 00:00:02' WHERE `USER`.`id` = 0
 const dayjs=require('dayjs')
-const baseMyspl = `build_platform`  //基础库名称
+const baseMyspl = `jianymn_admin`  //基础库名称
 
 /**
 * name:"USER",目标库表名，
