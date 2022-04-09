@@ -92,7 +92,7 @@ route.post('/login', (req, res) => {
         }
     })
     .then(({result})=>{
-        res.setHeader('Set-Cookie','a=222');
+        res.setHeader('Set-Cookie',`token=${md5Str}`);
         res.send(success(true, {
             userNames,
             token:md5Str,
