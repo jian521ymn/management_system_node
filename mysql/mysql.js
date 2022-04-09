@@ -17,9 +17,9 @@ async function mysqlConnection (params) {
     var connection = mysql.createConnection({
       connectionLimit: 50,
       host: 1 ? 'localhost' : '114.215.183.5', //远程MySQL数据库的ip地址
-      user: "build_platform",
+      user: "jianymn_admin",
       password: "AhAtcEyyjSeSijWE",
-      database: "build_platform"
+      database: "jianymn_admin"
     })
     const {code, msg, result} = await new Promise((resolve,reject)=>{
          // 数据库连接成功回调
