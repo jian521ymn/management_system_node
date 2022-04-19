@@ -15,7 +15,7 @@ const updateMyspl = (param)=>{
         return val + "`"+next+"` = '"+params[next]+(index!==Object.keys(params).length-1?"', ":"' ")
     },"")
     let after = "WHERE `"+ name +"`.`"+ key +"` ="+" "+ (isString?"'"+value+"'":value);
-    // console.log(before+middle+after,'修改指令',dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    console.log(before+middle+after,'修改指令',dayjs().format('YYYY-MM-DD HH:mm:ss'))
     return before+middle+after
 }
 /**

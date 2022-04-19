@@ -330,5 +330,30 @@ route.post('/img', async (req, res) => {
         })
     }).catch(e=>res.send(success(false,{msg:'未知异常'})))
 });
-
+//=>获取积分信息
+route.get('/team_list', (req, res) => {
+	const params = {
+        name:'TEAM',
+        params:{isDelete:0},
+    }
+	const updateUserSql = queryMyspl(params)
+    mysqlConnection({querySql:updateUserSql,res})
+    .then(({result})=>{
+        res.send(success(true, {data:result,msg: 'Ok'}));
+    })
+});
+//=>获取积分信息
+route.get('/team_update', (req, res) => {
+    const {num,id} =req.query || {};
+	const params = {
+        name:'TEAM',
+        params:{num},
+        primaryKey:{key:'id',value:id}
+    }
+	const updateUserSql = updateMyspl(params)
+    mysqlConnection({querySql:updateUserSql,res})
+    .then(({result})=>{
+        res.send(success(true, {data:{},msg: 'Ok'}));
+    })
+});
 module.exports = route;
