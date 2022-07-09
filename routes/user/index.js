@@ -51,7 +51,7 @@ const userParams=(params)=>{
 }
 // 新增及其列表返回数据过滤
 const dateFilter=(item)=>{
-    const {id,name,sex,email,phone,address,tokenTime,userName,operatingTime,operatingor,uuid}=item||{};
+    const {id,name,sex,email,phone,address,tokenTime,userName,operatingTime,operatingor,uuid, roles}=item||{};
     return {
         id,
         name,
@@ -63,7 +63,8 @@ const dateFilter=(item)=>{
         userName,
         operatingTime,
         operatingor,
-        uuid
+        uuid,
+        roles,
     }
 }
 
