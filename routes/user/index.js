@@ -45,6 +45,7 @@ const userParams=(params)=>{
         operatingTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
         operatingor: '',
         isDelete:'0',
+        roles:'',
         uuid:createUuid()
     }
     return Object.assign({...defaultParams},params)
