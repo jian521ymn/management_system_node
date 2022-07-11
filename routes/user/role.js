@@ -28,8 +28,16 @@ const {imgProxyAxios} = require('../../utils/imgProxyAxios')
 const { fileBufferPromise } = require('../../utils/fileBufferPromise');
 const { getCookie } = require('../../utils/getCookie');
 
+// 新增时对空数据进行赋默认值
+const userParams=(params)=>{
+    const defaultParams={
+        id:null,
+        uuid:createUuid()
+    }
+    return Object.assign({...defaultParams},params)
+}
 
-//=>获取用户列表
+//=>获取角色列表
 route.get('/list', (req, res) => {
     const {pageNum=1,pageSize=10} =req.query;
     const params = {
@@ -53,11 +61,11 @@ route.get('/list', (req, res) => {
     })
 });
 
-//=>获取用户详细信息
+//=>获取角色详细信息
 route.get('/info', (req, res) => {
     const {uuid} =req.query||{};
     const params = {
-	    name:"USER",
+	    name:"USER_ROLE",
 	    params:{uuid}
 	}
 	const getUserInfoSql = queryMyspl(params) // 编译转换为SQL指令
@@ -70,23 +78,23 @@ route.get('/info', (req, res) => {
     })
 });
 
-//=>增加用户信息
+//=>增加角色信息
 route.post('/add', (req, res) => {
     const params =userParams({...req.body,operatingor:req.query.userNames})
-	const userAddSql = addMyspl({name:'USER',params})
+	const userAddSql = addMyspl({name:'USER_ROLE',params})
     mysqlConnection({querySql:userAddSql,res}).then(({result})=>{
         res.send(success(true, {msg: 'Ok'}));
     })
 });
 
-//=>批量增加用户信息
+//=>批量增加角色信息
 route.post('/batchAdd', (req, res) => {
     const phoneAry = []; // 前置查询是否存在
     const batchAddSql =req.body.map(item=>{
        let params = userParams({...item,operatingor:req.query.userNames});
-       let phoneSql = queryMyspl({name:"USER",params:{phone:params.phone}}) // 编译转换为SQL指令
+       let phoneSql = queryMyspl({name:"USER_ROLE",params:{phone:params.phone}}) // 编译转换为SQL指令
        phoneAry.push(phoneSql)
-       return addMyspl({name:'USER',params})
+       return addMyspl({name:'USER_ROLE',params})
     })
     mysqlConnection({querySql:batchAddSql,res,checkParams:phoneAry}).then((result)=>{
         const resultFilter=result.reduce((all,next)=>{
@@ -99,15 +107,14 @@ route.post('/batchAdd', (req, res) => {
     }).catch(e=>{res.send(success(false, {msg: '未知异常'}))})
 });
 
-//=>修改用户信息
+//=>修改角色信息
 route.post('/update', (req, res) => {
 	const {uuid} =req.body||{};
 	const params = {
-        name:'USER',
+        name:'USER_ROLE',
         params:{
             ...req.body,
             operatingor:req.query.userNames,
-            operatingTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
         },
         primaryKey:{key:'uuid',value:uuid}
     }
