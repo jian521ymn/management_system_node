@@ -125,11 +125,11 @@ route.get('/login', (req, res) => {
 	})
     mysqlConnection({querySql:loginQuerySql,res, isCheckSso:false})
     .then(({result})=>{
-        const {tokenTime, token:sqlToken} =result[0] || {};
+        const {tokenTime, token:sqlToken, userName} =result[0] || {};
         const tokenStartTime = dayjs(tokenTime).valueOf() // 获取当前时间戳
         // 没查到数据 && 超出时间戳限制时间 && token是否与数据库内一致
         if(result.length !== 0 && dayjs().valueOf()-tokenStartTime < maxTime && sqlToken === token){
-            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token}}));
+            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
             return
         }
         res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:1}}));
