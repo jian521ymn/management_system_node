@@ -31,9 +31,9 @@ const { fileBufferPromise } = require('../../utils/fileBufferPromise');
 const { getCookie } = require('../../utils/getCookie');
 
 //=>删除用户信息
-route.get('/list', (req, res) => {
-    const files = fs.readdirSync('/www/code')
-   res.send(files)
+route.get('/system_list', (req, res) => {
+    const files = fs.readdirSync('/www/code').map(item=>({label:item,value:item}))
+    res.send(success(true, {msg: 'Ok',data:files}));
 });
 
 
