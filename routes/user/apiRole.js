@@ -41,6 +41,32 @@ route.get('/system_list', (req, res) => {
     const files = fs.readdirSync('/www/code').filter(item=>item !== 'jian_ymn_node').map(item=>({label:item,value:systemObj[item]}))
     res.send(success(true, {msg: 'Ok',data:files}));
 });
+//=>获取api列表
+route.get('/list', (req, res) => {
+    const {pageNum=1,pageSize=10, systemKey=''} =req.query;
+    const params = {
+	    name:"USER_ROLE_API",
+	    params:{
+            isDelete:"0",
+            parentId:`%${systemKey}`,
+        },
+	    page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
+	    like:"LIKE",
+	    sort:{id:"DESC"}
+	}
+	const loginQuerySql = queryMyspl(params) // 编译转换为SQL指令
+    mysqlConnection({querySql:loginQuerySql,res,isSearchList:true})
+    .then(({result,total})=>{
+        res.send(success(true, {
+            data:{
+                total,
+                list:result,
+                pageNum:Number(pageNum),
+                pageSize:Number(pageSize),
+            }
+        }));
+    })
+});
 
 
 
