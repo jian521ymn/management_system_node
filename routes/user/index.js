@@ -200,10 +200,14 @@ route.get('/getauthcode1', (req, res) => {
 
 //=>获取用户列表
 route.get('/list', (req, res) => {
-    const {pageNum=1,pageSize=10} =req.query;
+    const {pageNum=1,pageSize=10, roleName:roles, name} =req.query;
     const params = {
 	    name:"USER",
-	    params:{isDelete:"0"},
+	    params:{
+            isDelete:"0",
+            userName: `%${name || ''}`,
+            roles:  `%${roles || ''}`
+        },
 	    page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
 	    like:"LIKE",
 	    sort:{id:"DESC"}

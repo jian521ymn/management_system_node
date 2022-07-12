@@ -44,6 +44,7 @@ app.use(async (req, res, next) => {
 /*-ROUTE-*/
 app.use('/user', require('./routes/user/index.js'));
 app.use('/user/role', require('./routes/user/role.js'));
+app.use('/user/role/api', require('./routes/user/apiRole.js'));
 
 app.use((req, res) => {
 	res.status(404);

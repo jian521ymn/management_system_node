@@ -32,6 +32,7 @@ const { getCookie } = require('../../utils/getCookie');
 const userParams=(params)=>{
     const defaultParams={
         id:null,
+        isDelete:'0',
         uuid:createUuid()
     }
     return Object.assign({...defaultParams},params)
@@ -39,10 +40,14 @@ const userParams=(params)=>{
 
 //=>获取角色列表
 route.get('/list', (req, res) => {
-    const {pageNum=1,pageSize=10} =req.query;
+    const {pageNum=1,pageSize=10, roleName='', roleLevel=''} =req.query;
     const params = {
 	    name:"USER_ROLE",
-	    params:{isDelete:"0"},
+	    params:{
+            isDelete:"0",
+            roleName:`%${roleName}`,
+            roleLevel:`%${roleLevel}`,
+        },
 	    page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
 	    like:"LIKE",
 	    sort:{id:"DESC"}
@@ -73,7 +78,7 @@ route.get('/info', (req, res) => {
     .then(({result})=>{
         res.send(success(true, {
             msg: 'Ok',
-            data:dateFilter(result[0])
+            data:result[0]
         }));
     })
 });
@@ -122,6 +127,21 @@ route.post('/update', (req, res) => {
     mysqlConnection({querySql:updateUserSql,res})
     .then(({result})=>{
         res.send(success(true, {msg: 'Ok'}));
+    })
+});
+
+//=>删除用户信息
+route.get('/delete', (req, res) => {
+    const {uuid} = req.query
+    const params = {
+        name:'USER_ROLE',
+        params:{isDelete:"1"},
+        primaryKey:{key:"uuid",value:uuid}
+    }
+	const delUserSql=updateMyspl(params) 
+    mysqlConnection({querySql:delUserSql,res})
+    .then(({result})=>{
+        res.send(success(true,{msg: 'Ok'}));
     })
 });
 

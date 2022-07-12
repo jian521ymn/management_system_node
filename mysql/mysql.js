@@ -12,11 +12,11 @@ const {
 const { queryMyspl } =require('../utils/operationMysql')
 async function mysqlConnection (params) {
     const {querySql,res,isSearchList, checkParams, isCheckSso = true} =params;
-    // const isProd = res.req.headers.host.includes('114.215.183.5')
+    const isProd = !process.argv.includes('--dev')
     // 和本地数库建立连接
     var connection = mysql.createConnection({
       connectionLimit: 50,
-      host: 1 ? 'localhost' : '114.215.183.5', //远程MySQL数据库的ip地址
+      host: isProd ? 'localhost' : '114.215.183.5', //远程MySQL数据库的ip地址
       user: "jianymn_admin",
       password: "AhAtcEyyjSeSijWE",
       database: "jianymn_admin"
