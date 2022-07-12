@@ -32,7 +32,13 @@ const { getCookie } = require('../../utils/getCookie');
 
 //=>删除用户信息
 route.get('/system_list', (req, res) => {
-    const files = fs.readdirSync('/www/code').map(item=>({label:item,value:item}))
+    const systemObj = {
+        build_platform: '发布平台前端',
+        build_platform_node:"发布平台node后端",
+        management_system_node:'权限管理平台前端',
+        ymn_management_system_admin:'权限管理平台node后端'
+    }
+    const files = fs.readdirSync('/www/code').filter(item=>item !== 'jian_ymn_node').map(item=>({label:item,value:systemObj[item]}))
     res.send(success(true, {msg: 'Ok',data:files}));
 });
 
