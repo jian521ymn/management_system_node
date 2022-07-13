@@ -73,7 +73,6 @@ const dateFilter=(item)=>{
 
 //=>用户登录
 route.post('/login', (req, res) => {
-    console.log(req.body)
     let md5Str = '',userNames, imageUrls
 	let {userName:name, password = '', authCode = ''} = req.body || {};
 	const loginQuerySql = queryMyspl( {name:"USER",params:{name,password,isDelete:"0"}}); // 编译转换为SQL指令
@@ -111,7 +110,7 @@ route.post('/login', (req, res) => {
 //=>检测是否登录
 const maxTime = 24*60*60*1000 // 秘钥失效时间
 route.get('/login', (req, res) => {
-    console.log(req.query?.token,getCookie(req)?.token,'cookie');
+    console.log(req.query?.token,getCookie(req)?.token,'cookie', req.query);
 	let token = req.query?.token || getCookie(req)?.token
     console.log(token);
 	if(!token){
