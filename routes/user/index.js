@@ -170,7 +170,8 @@ function checkLogin(path,parentId,roles,userName,token,res){
     })
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
-            return Promise.reject('暂无权限,角色查询失败');
+            Promise.reject('暂无权限,角色查询失败');
+            return
         }
         const {id} = result[0] || {};
         if(roles == id) {
