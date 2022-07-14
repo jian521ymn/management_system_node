@@ -129,7 +129,7 @@ route.get('/login', (req, res) => {
         // 没查到数据 && 超出时间戳限制时间 && token是否与数据库内一致
         if(result.length !== 0 && dayjs().valueOf()-tokenStartTime < maxTime && sqlToken === token){
             if(path && parentId && roles) {
-                checkLogin(path,parentId,roles,userName,res); 
+                checkLogin(path,parentId,roles,userName,token,res); 
             }else{
                 res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
             }
@@ -142,7 +142,7 @@ route.get('/login', (req, res) => {
 });
 
 //=>接口校验
-function checkLogin(path,parentId,roles,userName,res){
+function checkLogin(path,parentId,roles,userName,token,res){
     mysqlConnection({
         querySql:queryMyspl({
             name:"USER_ROLE_API",
