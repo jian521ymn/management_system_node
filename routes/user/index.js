@@ -170,7 +170,8 @@ route.get('/login', (req, res) => {
         }else{
             Promise.reject()
         }
-    }).catch(()=>{
+    }).catch(({isSend})=>{
+        if(isSend) return;
         res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
     })
 
@@ -187,8 +188,7 @@ route.post('/import', async (req, res) => {
            return {userName,sex:sex==='男'?'1':'0',email,phone,address}
         })
         res.send(success(true,{data}));
-    } catch ({isSend}) {
-        if(isSend) return;
+    } catch () {
         res.send(success(false,{msg:'未知错误'}))
     }
 	
