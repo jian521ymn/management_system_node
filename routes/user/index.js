@@ -124,18 +124,64 @@ route.get('/login', (req, res) => {
 	})
     mysqlConnection({querySql:loginQuerySql,res, isCheckSso:false})
     .then(({result})=>{
-        const {tokenTime, token:sqlToken, userName, roles:rolelist} =result[0] || {};
+        const {tokenTime, token:sqlToken, userName, roles} =result[0] || {};
         const tokenStartTime = dayjs(tokenTime).valueOf() // 获取当前时间戳
         // 没查到数据 && 超出时间戳限制时间 && token是否与数据库内一致
         if(result.length !== 0 && dayjs().valueOf()-tokenStartTime < maxTime && sqlToken === token){
-            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
+            if(path && parentId && roles) {
+                checkLogin(path,parentId,roles,userName,res); 
+            }else{
+                res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
+            }
             return
         }
         res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:999}}));
-        return Promise.reject({isSend:true});
+        return;
     })
 
 });
+
+//=>接口校验
+function checkLogin(path,parentId,roles,userName,res){
+    mysqlConnection({
+        querySql:queryMyspl({
+            name:"USER_ROLE_API",
+            params:{
+                isDelete:"0",
+                path,
+                parentId
+            }
+        }),
+    res})
+    .then(({result})=>{
+        if(Array.isArray(result) && result.length === 0){
+            return Promise.reject();
+        }
+        const { uuid } = result[0] || {};
+        return mysqlConnection({
+            querySql:queryMyspl({
+                name:"USER_ROLE",
+                params:{
+                    uuid,
+                    isDelete:"0",
+                }
+            }),
+        res})
+    })
+    .then(({result})=>{
+        if(Array.isArray(result) && result.length === 0){
+            return Promise.reject();
+        }
+        const {id} = result[0] || {};
+        if(roles == id) {
+            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
+        }else{
+            Promise.reject()
+        }
+    }).catch(()=>{
+        res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
+    })
+}
 
 //=>上传文件并解析
 route.post('/import', async (req, res) => {
