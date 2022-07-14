@@ -179,7 +179,7 @@ function checkLogin(path,parentId,roles,userName,token,res){
             res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
         }else{
             // Promise.reject('暂无权限！')
-            res.send(success(true, {msg: 'Ok',data:{msg: msg || '暂无权限!',code:1}}));
+            res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
         }
     }).catch((msg)=>{
         console.log(msg,'msg');
