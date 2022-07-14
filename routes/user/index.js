@@ -162,7 +162,7 @@ function checkLogin(path,parentId,roles,userName,res){
             querySql:queryMyspl({
                 name:"USER_ROLE",
                 params:{
-                    permissions:uuid,
+                    permissions:`%${uuid}%`,
                     isDelete:"0",
                 }
             }),
