@@ -180,6 +180,7 @@ function checkLogin(path,parentId,roles,userName,token,res){
             Promise.reject('暂无权限！')
         }
     }).catch((msg)=>{
+        console.log(msg,'msg');
         res.send(success(true, {msg: 'Ok',data:{msg: msg || '暂无权限!',code:1}}));
     })
 }
