@@ -142,7 +142,7 @@ route.get('/login', (req, res) => {
             res})
         }
         res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:999}}));
-        return Promise.reject({isSend:true});
+        return Promise.reject('isSend');
     })
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
@@ -170,9 +170,9 @@ route.get('/login', (req, res) => {
         }else{
             Promise.reject()
         }
-    }).catch((err)=>{
-        console.log(err?.isSend,'issend');
-        if(err?.isSend) return;
+    }).catch((isSend)=>{
+        console.log(isSend,'issend');
+        if(isSend) return;
         res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
     })
 
