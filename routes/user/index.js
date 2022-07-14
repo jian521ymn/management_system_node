@@ -178,7 +178,8 @@ function checkLogin(path,parentId,roles,userName,token,res){
         if(roles == id) {
             res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
         }else{
-            Promise.reject('暂无权限！')
+            // Promise.reject('暂无权限！')
+            res.send(success(true, {msg: 'Ok',data:{msg: msg || '暂无权限!',code:1}}));
         }
     }).catch((msg)=>{
         console.log(msg,'msg');
