@@ -114,7 +114,7 @@ route.get('/login', (req, res) => {
     const {path='', type:parentId} =req.query || {};
     let roles =''
 	if(!token){
-	    errorRes()
+	    res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:999}}));
 	    return
 	}
 	// 编译转换为SQL指令
