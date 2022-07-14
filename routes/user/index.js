@@ -155,7 +155,7 @@ function checkLogin(path,parentId,roles,userName,res){
     res})
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
-            return Promise.reject();
+            return Promise.reject('路径查询失败');
         }
         const { uuid } = result[0] || {};
         return mysqlConnection({
@@ -170,16 +170,16 @@ function checkLogin(path,parentId,roles,userName,res){
     })
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
-            return Promise.reject();
+            return Promise.reject('角色查询失败');
         }
         const {id} = result[0] || {};
         if(roles == id) {
             res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
         }else{
-            Promise.reject()
+            Promise.reject('暂无权限！')
         }
-    }).catch(()=>{
-        res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
+    }).catch((msg)=>{
+        res.send(success(true, {msg: 'Ok',data:{msg: msg || '暂无权限!',code:1}}));
     })
 }
 
