@@ -142,7 +142,7 @@ route.get('/login', (req, res) => {
             res})
         }
         res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:999}}));
-        return Promise.reject();
+        return Promise.reject({isSend:true});
     })
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
@@ -187,7 +187,8 @@ route.post('/import', async (req, res) => {
            return {userName,sex:sex==='男'?'1':'0',email,phone,address}
         })
         res.send(success(true,{data}));
-    } catch (e) {
+    } catch ({isSend}) {
+        if(isSend) return;
         res.send(success(false,{msg:'未知错误'}))
     }
 	
