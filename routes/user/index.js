@@ -168,12 +168,12 @@ route.get('/login', (req, res) => {
         if(roles == id) {
             res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
         }else{
-            Promise.reject()
+            return Promise.reject()
         }
     }).catch((isSend)=>{
         console.log(isSend,'issend');
         if(isSend) return;
-        res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
+        // res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
     })
 
 });
