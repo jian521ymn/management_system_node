@@ -46,7 +46,7 @@ const queryMyspl = (param)=>{
         return str
     } ,"ORDER BY ")
     let LIMIT =page ? ` LIMIT ${page}` : ''
-    // console.log(before+middle+after+LIMIT,'查询指令',dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    console.log(before+middle+after+LIMIT,'查询指令',dayjs().format('YYYY-MM-DD HH:mm:ss'))
     return before+middle+after+LIMIT
 }
 /**
