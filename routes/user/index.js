@@ -188,7 +188,7 @@ route.post('/import', async (req, res) => {
            return {userName,sex:sex==='男'?'1':'0',email,phone,address}
         })
         res.send(success(true,{data}));
-    } catch () {
+    } catch (err) {
         res.send(success(false,{msg:'未知错误'}))
     }
 	
