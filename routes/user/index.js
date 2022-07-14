@@ -110,11 +110,11 @@ route.post('/login', (req, res) => {
 //=>检测是否登录
 const maxTime = 24*60*60*1000 // 秘钥失效时间
 route.get('/login', (req, res) => {
-    console.log(req.query?.token,getCookie(req)?.token,'cookie', req.query);
 	let token = req.query?.token || getCookie(req)?.token
-    console.log(token);
+    const {path='', type:parentId} =req.query || {};
+    let roles =''
 	if(!token){
-	    res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:1}}));
+	    errorRes()
 	    return
 	}
 	// 编译转换为SQL指令
@@ -124,14 +124,54 @@ route.get('/login', (req, res) => {
 	})
     mysqlConnection({querySql:loginQuerySql,res, isCheckSso:false})
     .then(({result})=>{
-        const {tokenTime, token:sqlToken, userName} =result[0] || {};
+        const {tokenTime, token:sqlToken, userName, roles:rolelist} =result[0] || {};
         const tokenStartTime = dayjs(tokenTime).valueOf() // 获取当前时间戳
         // 没查到数据 && 超出时间戳限制时间 && token是否与数据库内一致
         if(result.length !== 0 && dayjs().valueOf()-tokenStartTime < maxTime && sqlToken === token){
-            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
-            return
+            roles=rolelist.split(",");
+            return mysqlConnection({
+                querySql:queryMyspl({
+                    name:"USER_ROLE_API",
+                    params:{
+                        token,
+                        isDelete:"0",
+                        path,
+                        parentId
+                    }
+                }),
+            res})
         }
-        res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:1}}));
+        res.send(success(true, {msg: 'Ok',data:{msg: '请重新登录!',code:999}}));
+        return Promise.reject();
+    })
+    .then(({result})=>{
+        if(Array.isArray(result) && result.length === 0){
+            return Promise.reject();
+        }
+        const { uuid } = result[0] || {};
+        return mysqlConnection({
+            querySql:queryMyspl({
+                name:"USER_ROLE",
+                params:{
+                    uuid,
+                    token,
+                    isDelete:"0",
+                }
+            }),
+        res})
+    })
+    .then(({result})=>{
+        if(Array.isArray(result) && result.length === 0){
+            return Promise.reject();
+        }
+        const {id} = result[0] || {};
+        if(roles == id) {
+            res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
+        }else{
+            Promise.reject()
+        }
+    }).catch(()=>{
+        res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
     })
 
 });
