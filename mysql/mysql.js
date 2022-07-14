@@ -15,7 +15,7 @@ async function mysqlConnection (params) {
     const isProd = !process.argv.includes('--dev')
     // 和本地数库建立连接
     var connection = mysql.createConnection({
-      connectionLimit: 50,
+      connectionLimit: 500,
       host: isProd ? 'localhost' : '114.215.183.5', //远程MySQL数据库的ip地址
       user: "jianymn_admin",
       password: "AhAtcEyyjSeSijWE",
@@ -60,7 +60,24 @@ async function mysqlConnection (params) {
         },[])
         return Promise.all(promiseAll)
     }
-    return new Promise((resolve,reject)=>{
+    return new Promise((res_,rej_)=>{
+            const connectionEnd = () =>{
+                //停止链接数据库，必须再查询语句后，要不然一调用这个方法，就直接停止链接，数据操作就会失败
+                connection.end(function(err){
+                    if(err){
+                        console.log('关闭数据库连接失败！');
+                        throw err;
+                    }
+                });
+            }
+            const resolve = (data) =>{
+                res_(data)
+                connectionEnd()
+            }
+            const reject = (data) =>{
+                rej_(data)
+                connectionEnd()
+            }
             connection.query(querySql,(err,result)=>{
                 if(err){
                     res.send(success(false, {msg: `SQL error: ${err}!`}));
@@ -80,7 +97,7 @@ async function mysqlConnection (params) {
                     return
                 }
                 resolve({result})
-        
+                 
                 })
             })
     return
