@@ -170,8 +170,9 @@ route.get('/login', (req, res) => {
         }else{
             Promise.reject()
         }
-    }).catch(({isSend})=>{
-        if(isSend) return;
+    }).catch((err)=>{
+        console.log(err?.isSend,'issend');
+        if(err?.isSend) return;
         res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限!',code:1}}));
     })
 
