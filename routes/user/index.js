@@ -171,11 +171,11 @@ function checkLogin(path,parentId,roles,userName,token,res){
     })
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
-            Promise.reject('暂无权限,角色查询失败');
+            res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限,角色查询失败',code:1}}));
             return
         }
-        const {id} = result[0] || {};
-        if(roles == id) {
+        const ids = result.map(item=>`${item.id}`);
+        if(ids.includes(roles)) {
             res.send(success(true,{msg: 'Ok',data:{msg: 'Ok',code:0,token, userNames:userName}}));
         }else{
             // Promise.reject('暂无权限！')
