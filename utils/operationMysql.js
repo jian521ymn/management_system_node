@@ -18,6 +18,40 @@ const updateMyspl = (param)=>{
     console.log(before+middle+after,'修改指令',dayjs().format('YYYY-MM-DD HH:mm:ss'))
     return before+middle+after
 }
+
+/**
+* name:"USER",目标库表名，
+* params:[],更新的字段数组对象集合
+* key:主键名称
+*/ 
+// 批量更新数据库字段
+const updateMysplBatch = (param)=>{
+    const {name,params,key} = param||{};
+    let newParams = params?.reduce((prev,next)=>{
+        Object.keys(next)?.forEach((item)=>{
+            prev[item] = [...(prev[item] || []),(next[item] || '')]
+        })
+        return prev;
+    },{});
+    let keyArr = [...newParams[key]];
+    delete newParams[key];
+    let before = "UPDATE `"+ baseMyspl+"`.`"+name+"` SET ";
+    let middle = Object.keys(newParams).reduce((prev,next,index)=>{
+        prev+=` ${next}= CASE ${key}  ` + keyArr?.reduce((pre,nex,ind)=>{
+            const value =newParams[next][ind]
+            pre+=`WHEN ${( typeof(nex) === 'string' ? ("'"+nex+"'") : nex )} THEN `+ ( typeof(value) === 'string' ? ("'"+value+"'") : value ) + ' '
+            return pre
+        },'')
+        if(Object.keys(newParams).length-1 !== index) {
+            prev+= ` END, `
+        }
+        return prev
+    },"")
+    let after = `END WHERE ${key} IN(${keyArr.join(',')})`;
+    console.log(before+middle+after,'批量修改指令',dayjs().format('YYYY-MM-DD HH:mm:ss'))
+    return before+middle+after
+}
+
 /**
 * name:"USER",目标库表名，
 * params:{a:1},查询搜索的字段对象集合
@@ -66,4 +100,4 @@ const addMyspl = (param)=>{
     // console.log(before+middle+" VALUES "+ after,'新增指令', dayjs().format('YYYY-MM-DD HH:mm:ss'))
     return before+middle+" VALUES "+ after
 }
-module.exports = {updateMyspl, queryMyspl, addMyspl}
+module.exports = {updateMyspl, queryMyspl, addMyspl,updateMysplBatch}

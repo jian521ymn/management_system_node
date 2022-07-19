@@ -19,6 +19,7 @@ const {
 updateMyspl,
 queryMyspl,
 addMyspl,
+updateMysplBatch
 } = require('../../utils/operationMysql')
 const {
 writeFile,
@@ -128,21 +129,22 @@ route.post('/update', (req, res) => {
 });
 //=>批量修改api信息
 route.post('/batch_edit', (req, res) => {
-	const {uuid} =req.body||{};
-    console.log(req.body);
-	// const params = {
-    //     name:'USER_ROLE_API',
-    //     params:{
-    //         ...req.body,
-    //         operatingor:req.query.userNames,
-    //     },
-    //     primaryKey:{key:'uuid',value:uuid}
-    // }
-	// const updateUserSql = updateMyspl(params)
-    // mysqlConnection({querySql:updateUserSql,res})
-    // .then(({result})=>{
-    //     res.send(success(true, {msg: 'Ok'}));
-    // })
+	const {ids,isEnable} =req.body||{};
+    let param = ids.map(item=>({
+        id:item,
+        isEnable,
+        operatingor:req.query.userNames || ''
+    }))
+	const params = {
+        name:"USER_ROLE_API",
+        key:'id',
+        params:param
+    }
+	const updateUserSql = updateMysplBatch(params)
+    mysqlConnection({querySql:updateUserSql,res})
+    .then(({result})=>{
+        res.send(success(true, {msg: 'Ok'}));
+    })
 });
 
 //=>删除api信息
