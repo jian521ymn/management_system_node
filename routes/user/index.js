@@ -158,7 +158,11 @@ function checkLogin(path,parentId,roles,userName,token,res){
             Promise.reject('暂无权限,路径查询失败');
             return 
         }
-        const { uuid } = result[0] || {};
+        const { uuid, isEnable } = result[0] || {};
+        if(isEnable === '0'){
+            Promise.reject('该接口未启用，请配置启用！');
+            return 
+        }
         return mysqlConnection({
             querySql:queryMyspl({
                 name:"USER_ROLE",

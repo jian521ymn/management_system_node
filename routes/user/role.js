@@ -45,8 +45,8 @@ route.get('/list', (req, res) => {
 	    name:"USER_ROLE",
 	    params:{
             isDelete:"0",
-            roleName:`%${roleName}`,
-            roleLevel:`%${roleLevel}`,
+            roleName:`%${roleName}%`,
+            roleLevel:`%${roleLevel}%`,
         },
 	    page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
 	    like:"LIKE",
