@@ -159,6 +159,7 @@ function checkLogin(path,parentId,roles,userName,token,res){
             return 
         }
         const { uuid, isEnable } = result[0] || {};
+        console.log(result[0],'result[0]');
         if(isEnable === '0'){
             Promise.reject('该接口未启用，请配置启用！');
             return 
