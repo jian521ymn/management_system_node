@@ -155,14 +155,12 @@ function checkLogin(path,parentId,roles,userName,token,res){
     res})
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
-            Promise.reject('暂无权限,路径查询失败');
-            return 
+            return Promise.reject('暂无权限,路径查询失败');
         }
         const { uuid, isEnable } = result[0] || {};
         console.log(result[0],'result[0]');
         if(isEnable === '0'){
-            Promise.reject('该接口未启用，请配置启用！');
-            return 
+            return Promise.reject('该接口未启用，请配置启用！');
         }
         return mysqlConnection({
             querySql:queryMyspl({
@@ -176,8 +174,8 @@ function checkLogin(path,parentId,roles,userName,token,res){
     })
     .then(({result})=>{
         if(Array.isArray(result) && result.length === 0){
-            res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限,角色查询失败',code:1}}));
-            return
+            // res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限,角色查询失败',code:1}}));
+            return Promise.reject('暂无权限,角色查询失败！');
         }
         const ids = result.map(item=>`${item.id}`);
         if(ids.includes(roles)) {
