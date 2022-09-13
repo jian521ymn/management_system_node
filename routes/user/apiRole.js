@@ -47,7 +47,10 @@ route.get('/system_list', (req, res) => {
         build_platform: '发布平台前端',
         build_platform_node:"发布平台node后端",
         management_system_node:'权限管理平台前端',
-        ymn_management_system_admin:'权限管理平台node后端'
+        ymn_management_system_admin:'权限管理平台node后端',
+        'myapp-h5':'独立app内嵌h5',
+        'myapp-h5-node':'独立h5的node后台接口',
+
     }
     const isProd = !process.argv.includes('--dev')
     if(!isProd){
