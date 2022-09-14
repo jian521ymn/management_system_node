@@ -283,10 +283,10 @@ route.get('/list', (req, res) => {
 
 //=>获取用户详细信息
 route.get('/info', (req, res) => {
-    const {uuid} =req.query||{};
+    const {uuid, token} =req.query||{};
     const params = {
 	    name:"USER",
-	    params:{uuid}
+	    params:uuid ? {uuid} : {token}
 	}
 	const getUserInfoSql = queryMyspl(params) // 编译转换为SQL指令
     mysqlConnection({querySql:getUserInfoSql,res})
