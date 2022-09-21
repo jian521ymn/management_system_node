@@ -108,7 +108,7 @@ route.post('/login', (req, res) => {
 });
 
 //=>检测是否登录
-const maxTime = 24*60*60*1000 // 秘钥失效时间
+const maxTime = 7 * 24*60*60*1000 // 秘钥失效时间
 route.get('/login', (req, res) => {
 	let token = req.query?.token || getCookie(req)?.token
     const {path='', type:parentId} =req.query || {};
@@ -293,7 +293,7 @@ route.get('/info', (req, res) => {
     .then(({result})=>{
         res.send(success(true, {
             msg: 'Ok',
-            data:dateFilter(result[0])
+            data:{...dateFilter(result[0]),imageUrl:result[0]?.imageUrl}
         }));
     })
 });
