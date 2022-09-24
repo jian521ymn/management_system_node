@@ -421,7 +421,7 @@ route.get('/friend_list', (req, res) => {
     const {uuid,pageNum=1,pageSize=10, } =req.query || {};
 	const params = {
         name:'USER_FRIEND',
-        params:{isDelete:'0'},
+        params:{isDelete:'0',uuid},
         page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
         primaryKey:{key:'uuid',value:uuid}
     }
