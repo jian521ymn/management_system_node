@@ -428,7 +428,7 @@ route.get('/friend_list', (req, res) => {
 	const queryUserSql = queryMyspl(params)
     mysqlConnection({querySql:queryUserSql,res})
     .then(({result})=>{
-        const list = result.map(item=>dateFilter(item)) // 调用统一的用户信息map函数
+        const list = result // 调用统一的用户信息map函数
         res.send(success(true, {
             data:{
                 total,
