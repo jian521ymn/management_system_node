@@ -416,4 +416,27 @@ route.get('/team_update', (req, res) => {
         res.send(success(true, {data:{},msg: 'Ok'}));
     })
 });
+//=>获取好友列表
+route.get('/friend_list', (req, res) => {
+    const {uuid,pageNum=1,pageSize=10, } =req.query || {};
+	const params = {
+        name:'USER_FRIEND',
+        params:{isDelete:'0'},
+        page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
+        primaryKey:{key:'uuid',value:uuid}
+    }
+	const queryUserSql = queryMyspl(params)
+    mysqlConnection({querySql:queryUserSql,res})
+    .then(({result})=>{
+        const list = result.map(item=>dateFilter(item)) // 调用统一的用户信息map函数
+        res.send(success(true, {
+            data:{
+                total,
+                list:list,
+                pageNum:Number(pageNum),
+                pageSize:Number(pageSize),
+            }
+        }));
+    })
+});
 module.exports = route;
