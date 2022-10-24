@@ -27,7 +27,7 @@ const xlsxParsing = require('../../utils/xlsxParsing'); //xlsx转换包
 const {imgProxyAxios} = require('../../utils/imgProxyAxios')
 const { fileBufferPromise } = require('../../utils/fileBufferPromise');
 const { getCookie } = require('../../utils/getCookie');
-const {getfileByUrl} = require('../../utils/getfileByUrl');
+const {getfileByUrl,getfileProgress} = require('../../utils/getfileByUrl');
 
 // 新增时对空数据进行赋默认值
 const userParams=(params)=>{
@@ -450,6 +450,22 @@ route.get('/DownloadFile', (req, res) => {
     getfileByUrl({
         url: `https://nodejs.org/download/release/v${version}/node-v${version}${type}`,
         dir: '/www/file/node',
+        fileName: `node-${version}${type}`
+    }).then(res_=>{
+        res.send(res_)
+    }).catch(err=>{
+        // res.send({code:1,'下载异常'})
+    })
+    
+});
+//=>获取下载任务进度
+route.get('/getfileProgress', (req, res) => {
+    const {version,type} = req.query;
+    if(!version || !type){
+        res.send({code:1,msg:"参数异常"})
+        return
+    }
+    getfileProgress({
         fileName: `node-${version}${type}`
     }).then(res_=>{
         res.send(res_)

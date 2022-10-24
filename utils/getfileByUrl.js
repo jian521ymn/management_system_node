@@ -36,4 +36,30 @@ function getfileByUrl({url,fileName,dir}){
             }
         })
 };
-module.exports={getfileByUrl}
+
+/**
+ * 
+ * @param {*} fileName 	文件名
+ */
+ function getfileProgress({fileName}){
+    const url =`http://114.215.183.5:88/node/${fileName}`
+    return new Promise((res,rej)=>{
+        try {
+            console.log(`/www/file/node/${fileName}`,'2222')
+            var data=fs.existsSync(`/www/file/node/${fileName}`)
+            if(!data){
+                res({code:1,msg:'获取文件异常'})
+                return
+            }
+            // let stream = fs.createWriteStream(path.join(dir, fileName));
+            request(url).on("data", function (data) {
+                res({a:response.headers['content-length'], b:data.length})
+            });
+        } catch (error) {
+            console('无缓存，下载')
+            
+        }
+    })
+};
+
+module.exports={getfileByUrl,getfileProgress}
