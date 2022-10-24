@@ -1,5 +1,5 @@
 const CONFIG = require('./config'),
-	// session = require('express-session'),
+	session = require('express-session'),
 	cookieParser=require("cookie-parser"),
 	bodyParser = require('body-parser'),
 	cors = require('cors')
@@ -30,7 +30,7 @@ app.all('*', (req, res, next) => {
 	req.method === 'OPTIONS' ? res.send('CURRENT SERVICES SUPPORT CROSS DOMAIN REQUESTS!') : next();
 });
 app.use(cookieParser('jianymn'))
-// app.use(session(CONFIG.SESSION));
+app.use(session(CONFIG.SESSION));
 app.use(bodyParser.json());//数据JSON类型
 app.use(bodyParser.urlencoded({
 	extended: false
