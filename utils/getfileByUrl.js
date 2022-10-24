@@ -13,7 +13,6 @@ function getfileByUrl({url,fileName,dir}){
         console.log(url)
         console.log(fileName)
         console.log(dir)
-        let stream = fs.createWriteStream(path.join(dir, fileName));
         return new Promise((res,rej)=>{
             try {
                 console.log(`/www/file/node/${fileName}`,'2222')
@@ -22,6 +21,7 @@ function getfileByUrl({url,fileName,dir}){
                     res({code:0,data:`http://114.215.183.5:88/node/${fileName}`})
                     return
                 }
+                let stream = fs.createWriteStream(path.join(dir, fileName));
                 request(url).pipe(stream).on("close", function (err) {
                     if(err){
                         rej({code:1,msg:"下载失败"})
