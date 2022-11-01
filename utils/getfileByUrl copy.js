@@ -493,8 +493,8 @@ function getfileProgress({ fileName }) {
                         vers[nodeVersion[indd]] = data;
                         indd = indd + 1;
                         if (indd > nodeVersion?.length - 1) {
-                            fs.writeFile("output.json", JSON.stringify(vers), function(err) {
-                                if(err) {
+                            fs.writeFile("output.json", JSON.stringify(vers), function (err) {
+                                if (err) {
                                     return console.log(err);
                                 }
                             });
@@ -535,26 +535,26 @@ function formatBytes(bytes, decimals = 2) {
 function formatBody(a) {
     try {
         let ccc = [];
-    let dd = a.replace(/ /g, '').match(/<a[^>]*>[^<]*<\/a>/g)
-    for (let i = 0; i < dd.length; i++) {
-        ccc.push(dd[i].match(/(?<=\")(.+?)(?=\")/g, '')[0])
-    }
-    let size = a.replace(/ /g, '').replace(/<a[^>]*>[^<]*<\/a>/g, '').match(/<pre[^>]*>[^<]*<\/pre>/g, '')[0].replace('<pre>', '').replace('</pre>', '').split('\r\n');
-    ccc = ccc.filter(item => {
-        return !['../', 'docs/', 'win-x64/', 'win-x86/'].includes(item)
-    })
-    size = size.reduce((prev, next, index) => {
-        let ind = next.indexOf(':')
-        if (next !== '' && next.slice(ind + 3) !== '-') {
-            prev.push(next.slice(ind + 3))
+        let dd = a.replace(/ /g, '').match(/<a[^>]*>[^<]*<\/a>/g)
+        for (let i = 0; i < dd.length; i++) {
+            ccc.push(dd[i].match(/(?<=\")(.+?)(?=\")/g, '')[0])
         }
-        return prev
-    }, [])
-    let obj = {}
-    size.forEach((item, index) => {
-        obj[ccc[index]] = size[index]
-    })
-    return obj
+        let size = a.replace(/ /g, '').replace(/<a[^>]*>[^<]*<\/a>/g, '').match(/<pre[^>]*>[^<]*<\/pre>/g, '')[0].replace('<pre>', '').replace('</pre>', '').split('\r\n');
+        ccc = ccc.filter(item => {
+            return !['../', 'docs/', 'win-x64/', 'win-x86/'].includes(item)
+        })
+        size = size.reduce((prev, next, index) => {
+            let ind = next.indexOf(':')
+            if (next !== '' && next.slice(ind + 3) !== '-') {
+                prev.push(next.slice(ind + 3))
+            }
+            return prev
+        }, [])
+        let obj = {}
+        size.forEach((item, index) => {
+            obj[ccc[index]] = size[index]
+        })
+        return obj
     } catch (error) {
         return {}
     }

@@ -12,10 +12,6 @@ var request = require("request");
  * @param {*} dir 下载到的目录
  */
 function getfileByUrl({ url, fileName, dir }) {
-    console.log('------------------------------------------------')
-    console.log(url)
-    console.log(fileName)
-    console.log(dir)
     return new Promise((res, rej) => {
         try {
             console.log(`/www/file/node/${fileName}`, '2222')

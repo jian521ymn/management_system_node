@@ -448,7 +448,8 @@ route.get('/DownloadFile', (req, res) => {
         return
     }
     getfileByUrl({
-        url: `https://nodejs.org/download/release/v${version}/node-v${version}${type}`,
+        // url: `https://nodejs.org/download/release/v${version}/node-v${version}${type}`,
+        url: `https://npm.taobao.org/mirrors/node/v${version}/node-v${version}${type}`,
         dir: '/www/file/node',
         fileName: `node-${version}${type}`
     }).then(res_=>{
