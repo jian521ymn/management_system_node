@@ -430,8 +430,8 @@ route.get('/friend_list', (req, res) => {
         return "SELECT USER_FRIEND.id,USER_FRIEND.uuid,USER_FRIEND.status,USER_FRIEND.name,USER_FRIEND.isDelete,USER_FRIEND.remarkName,USER_FRIEND.friendUuid,USER.imageUrl, USER.userName FROM `USER_FRIEND` JOIN `USER` ON (USER_FRIEND.friendUuid = USER.uuid AND USER_FRIEND.isDelete = '0' AND USER_FRIEND.uuid = '"+
         uuid + "')"
     }
-    console.log(queryUserSql(),'queryUserSql');
-    mysqlConnection({querySql:queryUserSql(),res})
+    console.log(queryUserSql(uuid),'queryUserSql');
+    mysqlConnection({querySql:queryUserSql(uuid),res})
     .then(({result,total})=>{
         const list = result // 调用统一的用户信息map函数
         res.send(success(true, {
