@@ -431,7 +431,7 @@ route.get('/friend_list', (req, res) => {
         uuid + "')"
     }
     console.log(queryUserSql,'queryUserSql');
-    mysqlConnection({querySql:queryUserSql,res})
+    mysqlConnection({querySql:queryUserSql(),res})
     .then(({result,total})=>{
         const list = result // 调用统一的用户信息map函数
         res.send(success(true, {
