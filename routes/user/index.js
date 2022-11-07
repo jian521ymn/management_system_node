@@ -481,4 +481,10 @@ route.get('/getfileProgress', (req, res) => {
     })
     
 });
+//=>获取下载任务进度
+route.get('/getIp', (req, res) => {
+    console.log(req,res);
+    res.send(2)
+    
+});
 module.exports = route;
