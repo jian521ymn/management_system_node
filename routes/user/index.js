@@ -505,7 +505,7 @@ route.get('/InfoUploadList', (req, res) => {
         name:'NODE_DOWN',
         params:{isDelete:'0'},
     }
-    mysqlConnection({querySql:queryMyspl(params),res})
+    mysqlConnection({querySql:queryMyspl(params),res,isSearchList:true,})
     .then(({result,total})=>{
         const list = result // 调用统一的用户信息map函数
         const listReduce = list?.reduce((prev,next)=>{
