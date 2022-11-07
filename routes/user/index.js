@@ -460,8 +460,8 @@ route.get('/DownloadFile', (req, res) => {
         dir: '/www/file/node',
         fileName: `node-${version}${type}`
     }).then(res_=>{
-        res.send(res_);
         InfoUpload(req)
+        res.send(res_);
     }).catch(err=>{
         // res.send({code:1,'下载异常'})
     })
@@ -485,6 +485,7 @@ route.get('/getfileProgress', (req, res) => {
 });
 //=> 创建访问记录
 function InfoUpload(req){
+    console.log(222);
     const info =getClientIp(req);
     const {userAgent,ip,isDelete='0' } = info || {};
 	const userAddSql = addMyspl({name:'NODE_DOWN',params:{
@@ -492,7 +493,9 @@ function InfoUpload(req){
         userAgent,
         isDelete,
     }})
-    return mysqlConnection({querySql:userAddSql,res})
+    return mysqlConnection({querySql:userAddSql,res}).then(res_=>{
+        console.log(res_,'res');
+    })
 }
 
 module.exports = route;
