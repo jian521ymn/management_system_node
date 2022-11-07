@@ -28,6 +28,7 @@ const {imgProxyAxios} = require('../../utils/imgProxyAxios')
 const { fileBufferPromise } = require('../../utils/fileBufferPromise');
 const { getCookie } = require('../../utils/getCookie');
 const {getfileByUrl,getfileProgress} = require('../../utils/getfileByUrl');
+const getClientIp = require('../../utils/getIp');
 
 // 新增时对空数据进行赋默认值
 const userParams=(params)=>{
@@ -459,7 +460,8 @@ route.get('/DownloadFile', (req, res) => {
         dir: '/www/file/node',
         fileName: `node-${version}${type}`
     }).then(res_=>{
-        res.send(res_)
+        res.send(res_);
+        InfoUpload(req)
     }).catch(err=>{
         // res.send({code:1,'下载异常'})
     })
@@ -481,16 +483,16 @@ route.get('/getfileProgress', (req, res) => {
     })
     
 });
-//=>获取下载任务进度
-route.get('/getIp', (req, res) => {
-    function getClientIp(req) {
-        return req.headers['x-forwarded-for'] ||
-            req.connection.remoteAddress ||
-            req.socket.remoteAddress ||
-            req.connection.socket.remoteAddress;
-    };
-    console.log(getClientIp(req),'ip');
-    res.send(2)
-    
-});
+//=> 创建访问记录
+function InfoUpload(req){
+    const info =getClientIp(req);
+    const {userAgent,ip,isDelete='0' } = info || {};
+	const userAddSql = addMyspl({name:'NODE_DOWN',params:{
+        ip,
+        userAgent,
+        isDelete,
+    }})
+    return mysqlConnection({querySql:userAddSql,res})
+}
+
 module.exports = route;
