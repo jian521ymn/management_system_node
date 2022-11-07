@@ -485,7 +485,7 @@ route.get('/getfileProgress', (req, res) => {
 });
 //=> 创建访问记录
 function InfoUpload(req,res){
-    console.log(222);
+    console.log('创建下载记录');
     const info =getClientIp(req);
     const {userAgent,ip,isDelete='0' } = info || {};
 	const userAddSql = addMyspl({name:'NODE_DOWN',params:{
@@ -494,8 +494,31 @@ function InfoUpload(req,res){
         isDelete,
     }})
     return mysqlConnection({querySql:userAddSql,res}).then(res_=>{
-        console.log(res_,'res');
+        console.log('成功','res');
     })
 }
+
+//=>查询访问记录
+route.get('/InfoUploadList', (req, res) => {
+	const {uuid,pageNum=1,pageSize=10, } =req.query || {};
+	const params = {
+        name:'NODE_DOWN',
+        params:{isDelete:'0'},
+    }
+    mysqlConnection({querySql:queryUserSql(params),res})
+    .then(({result,total})=>{
+        const list = result // 调用统一的用户信息map函数
+        const listReduce = list?.reduce((prev,next)=>{
+            prev[next?.ip || '520'] = next;
+            return prev;
+        },{})
+        res.send(success(true, {
+            data:{
+                total,
+                people:Object.keys(listReduce)?.length
+            }
+        }));
+    })
+});
 
 module.exports = route;
