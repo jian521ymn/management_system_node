@@ -483,7 +483,13 @@ route.get('/getfileProgress', (req, res) => {
 });
 //=>获取下载任务进度
 route.get('/getIp', (req, res) => {
-    console.log(req,res);
+    function getClientIp(req) {
+        return req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;
+    };
+    console.log(getClientIp(req),'ip');
     res.send(2)
     
 });
