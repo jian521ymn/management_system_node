@@ -521,8 +521,12 @@ route.get('/InfoUploadList', (req, res) => {
             }
         }),
     }).then(({result,total})=>{
-        resData.resPeople=result?.length;
         resData.resTotal=total;
+        const listReduce = result?.reduce((prev,next)=>{
+            prev[next?.ip || '520'] = next;
+            return prev;
+        },{});
+        resData.resPeople=Object.keys(listReduce)?.length;
         return mysqlConnection({querySql:queryMyspl(params),res,isSearchList:true,})
     })
     .then(({result,total})=>{
