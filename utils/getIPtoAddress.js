@@ -70,6 +70,7 @@ function getIPtoAddress(ip) {
     return new Promise(function (resolve, reject) {
         axios.get(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`).then(ress => {
             const address = ascii2native(ress.data.data);
+            console.log(address,'address');
             resolve(address)
         }).catch(()=>{
             resolve('未知地区')
