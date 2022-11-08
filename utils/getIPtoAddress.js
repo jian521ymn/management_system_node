@@ -68,7 +68,7 @@ function toChar(str) {
 function getIPtoAddress(ip, res) {
     console.log(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`);
     axios.get(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`).then(ress => {
-        console.log(ascii2native(res.data.data));
+        console.log(ascii2native(ress.data.data));
     })
 };
 module.exports = getIPtoAddress
