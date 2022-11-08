@@ -514,7 +514,11 @@ route.get('/InfoUploadList', (req, res) => {
         res,
         isSearchList:true,
         querySql:queryMyspl({
-            operatingTime:`%${dayjs().format('YYYY-MM-DD')}%`
+            name:'NODE_DOWN',
+            params:{
+                isDelete:'0',
+                operatingTime:`%${dayjs().format('YYYY-MM-DD')}%`
+            }
         }),
     }).then(({result,total})=>{
         resData.resPeople=result?.length;
