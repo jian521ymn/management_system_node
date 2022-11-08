@@ -491,7 +491,7 @@ function InfoUpload(req,res){
     const {userAgent,ip,isDelete='0' } = info || {};
     
 	
-    return getIPtoAddress(ip).then(address=>{
+    return getIPtoAddress(ip.replace('::ffff:','')).then(address=>{
         const userAddSql = addMyspl({name:'NODE_DOWN',params:{
             ip,
             userAgent,
