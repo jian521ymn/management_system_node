@@ -68,10 +68,9 @@ function toChar(str) {
 function getIPtoAddress(ip) {
     console.log(ip);
     return new Promise(function (resolve, reject) {
-        axios.get(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`).then(ress => {
-            const address = ascii2native(ress.data.data);
-            console.log(address,'address');
-            resolve(address)
+        axios.get(`https://restapi.amap.com/v3/ip?ip=${ip}&key=dfb837981bc384dee39275546f47a118`).then(ress => {
+            const {province,city} = ress.data;
+            resolve(`${province}${city}`)
         }).catch(()=>{
             resolve('未知地区')
         })
