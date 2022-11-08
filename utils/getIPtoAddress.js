@@ -65,10 +65,14 @@ function toChar(str) {
     return String.fromCharCode(code);
 }
 
-function getIPtoAddress(ip, res) {
-    console.log(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`);
-    axios.get(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`).then(ress => {
-        console.log(ascii2native(ress.data.data));
+function getIPtoAddress(ip) {
+    return new Promise(function (resolve, reject) {
+        axios.get(`http://ip.360.cn/IPQuery/ipquery?ip=${ip}`).then(ress => {
+            const address = ascii2native(ress.data.data);
+            resolve(address)
+        }).catch(()=>{
+            resolve('未知地区')
+        })
     })
 };
 module.exports = getIPtoAddress

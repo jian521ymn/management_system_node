@@ -489,12 +489,17 @@ function InfoUpload(req,res){
     console.log('创建下载记录');
     const info =getClientIp(req);
     const {userAgent,ip,isDelete='0' } = info || {};
-	const userAddSql = addMyspl({name:'NODE_DOWN',params:{
-        ip,
-        userAgent,
-        isDelete,
-    }})
-    return mysqlConnection({querySql:userAddSql,res}).then(res_=>{
+    
+	
+    return getIPtoAddress(ip).then(address=>{
+        const userAddSql = addMyspl({name:'NODE_DOWN',params:{
+            ip,
+            userAgent,
+            isDelete,
+            address,
+        }})
+        return mysqlConnection({querySql:userAddSql,res})
+    }).then(res_=>{
         console.log('成功','res');
     })
 }
@@ -520,10 +525,6 @@ route.get('/InfoUploadList', (req, res) => {
             }
         }));
     })
-});
-//=>查询访问记录
-route.get('/ipToAddress', (req, res) => {
-	getIPtoAddress(req.query.ip,res)
 });
 
 module.exports = route;
