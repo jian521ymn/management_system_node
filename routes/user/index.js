@@ -29,6 +29,7 @@ const { fileBufferPromise } = require('../../utils/fileBufferPromise');
 const { getCookie } = require('../../utils/getCookie');
 const {getfileByUrl,getfileProgress} = require('../../utils/getfileByUrl');
 const getClientIp = require('../../utils/getIp');
+const getIPtoAddress = require('../../utils/getIPtoAddress');
 
 // 新增时对空数据进行赋默认值
 const userParams=(params)=>{
@@ -519,6 +520,10 @@ route.get('/InfoUploadList', (req, res) => {
             }
         }));
     })
+});
+//=>查询访问记录
+route.get('/ipToAddress', (req, res) => {
+	getIPtoAddress(req.query.ip,res)
 });
 
 module.exports = route;
