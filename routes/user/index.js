@@ -489,8 +489,6 @@ function InfoUpload(req,res){
     console.log('创建下载记录');
     const info =getClientIp(req);
     const {userAgent,ip,isDelete='0' } = info || {};
-    
-	
     return getIPtoAddress(ip.replace('::ffff:','')).then(address=>{
         const userAddSql = addMyspl({name:'NODE_DOWN',params:{
             ip,
@@ -511,7 +509,18 @@ route.get('/InfoUploadList', (req, res) => {
         name:'NODE_DOWN',
         params:{isDelete:'0'},
     }
-    mysqlConnection({querySql:queryMyspl(params),res,isSearchList:true,})
+    let resData={}
+    mysqlConnection({
+        res,
+        isSearchList:true,
+        querySql:queryMyspl({
+            operatingTime:`%${dayjs().format('YYYY-MM-DD')}%`
+        }),
+    }).then(({result,total})=>{
+        resData.resPeople=result?.length;
+        resData.resTotal=total;
+        return mysqlConnection({querySql:queryMyspl(params),res,isSearchList:true,})
+    })
     .then(({result,total})=>{
         const list = result // 调用统一的用户信息map函数
         const listReduce = list?.reduce((prev,next)=>{
@@ -521,7 +530,8 @@ route.get('/InfoUploadList', (req, res) => {
         res.send(success(true, {
             data:{
                 total,
-                people:Object.keys(listReduce)?.length
+                people:Object.keys(listReduce)?.length,
+                ...resData,
             }
         }));
     })
