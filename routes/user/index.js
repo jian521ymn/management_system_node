@@ -30,6 +30,7 @@ const { getCookie } = require('../../utils/getCookie');
 const {getfileByUrl,getfileProgress} = require('../../utils/getfileByUrl');
 const getClientIp = require('../../utils/getIp');
 const getIPtoAddress = require('../../utils/getIPtoAddress');
+const fetchContent = require('../../utils/getUrl');
 
 // 新增时对空数据进行赋默认值
 const userParams=(params)=>{
@@ -489,12 +490,12 @@ function InfoUpload(req,res){
     console.log('创建下载记录');
     const info =getClientIp(req);
     const {userAgent,ip,isDelete='0' } = info || {};
-    return getIPtoAddress(ip.replace('::ffff:','')).then(address=>{
+    return fetchContent(ip.replace('::ffff:','')).then(address=>{
         const userAddSql = addMyspl({name:'NODE_DOWN',params:{
             ip,
             userAgent,
             isDelete,
-            address,
+            address:address?.addr || '未知地区',
         }})
         return mysqlConnection({querySql:userAddSql,res})
     }).then(res_=>{
@@ -544,5 +545,13 @@ route.get('/InfoUploadList', (req, res) => {
         }));
     })
 });
+//=>获取下载任务进度
+// route.get('/ip', (req, res) => {
+//     const {ip} = req.query;
+//     fetchContent(ip.replace('::ffff:','')).then(data=>{
+//         console.log(data,'data');
+//     })
+    
+// });
 
 module.exports = route;
