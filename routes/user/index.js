@@ -553,13 +553,23 @@ route.get('/InfoUploadList', (req, res) => {
         }));
     })
 });
-//=>获取下载任务进度
-// route.get('/ip', (req, res) => {
-//     const {ip} = req.query;
-//     fetchContent(ip.replace('::ffff:','')).then(data=>{
-//         console.log(data,'data');
-//     })
+//=>问题留言创建
+route.get('/opinion', (req, res) => {
+    const {text} = req.query;
+    const info =getClientIp(req);
+    const {userAgent,ip,isDelete='0' } = info || {};
+    return fetchContent(ip.replace('::ffff:','')).then(address=>{
+        const userAddSql = addMyspl({name:'NODE_OPINION',params:{
+            ip,
+            userAgent,
+            isDelete,
+            text,
+        }})
+        return mysqlConnection({querySql:userAddSql,res})
+    }).then(res_=>{
+        console.log('成功','res');
+    })
     
-// });
+});
 
 module.exports = route;
