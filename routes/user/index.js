@@ -451,9 +451,14 @@ route.get('/friend_list', (req, res) => {
 });
 //=>下载任务
 route.get('/DownloadFile', (req, res) => {
-    const {version,type} = req.query;
+    const {version,type,force} = req.query;
     if(!version || !type){
         res.send({code:1,msg:"参数异常"})
+        return
+    }
+    if(force === 'true'){
+        InfoUpload(req,res);
+        res.send({code:0,data:`https://npm.taobao.org/mirrors/node/v${version}/node-v${version}${type}`})
         return
     }
     getfileByUrl({
@@ -488,6 +493,7 @@ route.get('/getfileProgress', (req, res) => {
 //=> 创建访问记录
 function InfoUpload(req,res){
     console.log('创建下载记录');
+    const {version,type,force} = req.query;
     const info =getClientIp(req);
     const {userAgent,ip,isDelete='0' } = info || {};
     return fetchContent(ip.replace('::ffff:','')).then(address=>{
@@ -495,6 +501,8 @@ function InfoUpload(req,res){
             ip,
             userAgent,
             isDelete,
+            version,
+            type,
             address:address?.addr || '未知地区',
         }})
         return mysqlConnection({querySql:userAddSql,res})
