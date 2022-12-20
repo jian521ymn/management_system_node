@@ -568,6 +568,7 @@ route.get('/opinion', (req, res) => {
         return mysqlConnection({querySql:userAddSql,res})
     }).then(res_=>{
         console.log('成功','res');
+        res.send({code:0,data:''})
     })
     
 });
