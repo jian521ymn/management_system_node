@@ -69,7 +69,7 @@ route.get('/list', (req, res) => {
             isDelete:"0",
             parentId:`%${systemKey}%`,
         },
-	    page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
+	    page:`${pageSize*(pageNum-1)},${pageSize}`,
 	    like:"LIKE",
 	    sort:{id:"DESC"}
 	}
