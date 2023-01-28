@@ -67,7 +67,7 @@ route.get('/list', (req, res) => {
 	    name:"USER_ROLE_API",
 	    params:{
             isDelete:"0",
-            parentId:`%${systemKey}`,
+            parentId:`%${systemKey}%`,
         },
 	    page:`${pageSize*(pageNum-1)},${pageSize*pageNum}`,
 	    like:"LIKE",
