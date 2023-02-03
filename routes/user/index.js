@@ -179,6 +179,7 @@ function checkLogin(path,parentId,roles,userName,token,res){
     .then(({result})=>{
         if(result === 'isEnable'){
             res.send(success(true, {msg: 'Ok',data:{msg: '未开启鉴权!',code:0}}));
+            return
         }
         if(Array.isArray(result) && result.length === 0){
             // res.send(success(true, {msg: 'Ok',data:{msg: '暂无权限,角色查询失败',code:1}}));
