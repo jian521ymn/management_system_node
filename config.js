@@ -4,7 +4,7 @@ module.exports = {
 
 	//=>CROS跨域相关信息
 	CROS: {
-		ALLOW_ORIGIN: 'http://114.215.183.5:3336,http://114.215.183.5:9002,http://114.215.183.5:3337,http://114.215.183.5:3333,http://114.215.183.5:4000,http://114.215.183.5:3000,http://114.215.183.5,http://jianymn.top/',
+		ALLOW_ORIGIN: 'http://47.94.11.121:3336,http://47.94.11.121:9002,http://47.94.11.121:3337,http://47.94.11.121:3333,http://47.94.11.121:4000,http://47.94.11.121:3000,http://47.94.11.121,http://jianymn.top/',
 		ALLOW_METHODS: 'PUT,POST,GET,DELETE,OPTIONS,HEAD',
 		HEADERS: 'Content-Type,Content-Length,Authorization, Accept,X-Requested-With',
 		CREDENTIALS: true
